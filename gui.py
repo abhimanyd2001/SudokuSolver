@@ -60,17 +60,9 @@ def draw_grid():
 
 
 # Display initial numbers
-sudoku = SudokuSolver([
-    [None, None, None, 6, None, 1, None, None, None],
-    [None, None, None, None, 7, 9, 1, None, None],
-    [4, None, None, 5, None, None, None, 3, None],
-    [2, None, 6, None, None, None, None, 4, 9],
-    [None, None, 5, None, None, None, 3, None, None],
-    [8, 3, None, None, None, None, 2, None, 1],
-    [None, 9, None, None, None, 5, None, None, 7],
-    [None, None, 3, 9, 6, None, None, None, None],
-    [None, None, None, 2, None, 4, None, None, None],
-])
+
+
+sudoku = SudokuSolver()
 
 
 def display_puzzle(board):

@@ -1,16 +1,49 @@
 import numpy as np
-import copy
+import random
+
 
 class SudokuSolver:
-    def __init__(self, puzzle):
-        puzzle = np.array(puzzle)
-        if self.check_invariants(puzzle):
-            self.puzzle = puzzle
-            self.rows = puzzle.shape[0]
-            self.columns = puzzle.shape[1]
+    def __init__(self):
+        self.puzzle = np.array([
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+        ])
+        self.rows = self.puzzle.shape[0]
+        self.columns = self.puzzle.shape[1]
+
+        self.generate_puzzle()
 
     def __repr__(self):
         return "Rows: " + str(self.rows) + " Cols: " + str(self.columns)
+
+    def generate_puzzle(self):
+        for k in range(10):
+            i = random.randint(0, 8)
+            j = random.randint(0, 8)
+            self.puzzle[i, j] = random.randint(1, 9)
+            if not self.is_solvable():
+                self.puzzle[i, j] = None
+
+        self.solver()
+
+        running = 50
+        while running > 0:
+            print("Generating board...")
+            i = random.randint(0, 8)
+            j = random.randint(0, 8)
+            if self.puzzle[i, j] is not None:
+                self.puzzle[i, j] = None
+                running -= 1
+        print("Ready")
+
+
 
     def check_invariants(self, puzzle):
         shape = puzzle.shape
@@ -74,8 +107,11 @@ class SudokuSolver:
             return (False, solved_array)
 
     def is_solvable(self):
+        initial_array = np.copy(self.puzzle)
         if self.validate_initial_board():
-            return self.backtracking_algorithm(self.puzzle)[0]
+            solvable = self.backtracking_algorithm(self.puzzle)[0]
+            self.puzzle = initial_array
+            return solvable
         return False
 
     def solver(self):
@@ -87,17 +123,7 @@ class SudokuSolver:
             return None
 
 
-sudoku = SudokuSolver([
-    [None, None, None, 6, None, 1, None, None, None],
-    [None, None, None, None, 7, 9, 1, None, None],
-    [4, None, None, 5, None, None, None, 3, None],
-    [2, None, 6, None, None, None, None, 4, 9],
-    [None, None, 5, None, None, None, 3, None, None],
-    [8, 3, None, None, None, None, 2, None, 1],
-    [None, 9, None, None, None, 5, None, None, 7],
-    [None, None, 3, 9, 6, None, None, None, None],
-    [None, None, None, 2, None, 4, None, None, None],
-])
 
-print(sudoku.is_solvable())
+
+
 
